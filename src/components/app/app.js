@@ -9,7 +9,6 @@ import ItemAddForm from '../item-add-form';
 import './app.css';
 
 export default class App extends Component {
-
   maxId = 100;
 
   state = {
@@ -20,46 +19,42 @@ export default class App extends Component {
     ]
   };
 
-  deleteItem = (id) => {
-    this.setState(({ todoData }) => {
-      const idx = todoData.findIndex((el) => el.id === id);
-
-      const newArray = [
-        ...todoData.slice(0, idx),
-        ...todoData.slice(idx + 1)
-      ];
-
-      return {
-        todoData: newArray
-      };
-    });
-  };
-
-  addItem = (text) => {
-    // generate id ?
+  handlerAddItem = () => {
     const newItem = {
-      label: text,
+      label: 'Hello world',
       important: false,
       id: this.maxId++
-    };
-
-    this.setState(({ todoData }) => {
-      const newArr = [
+    }
+    this.setState((state) => {
+      const { todoData } = state
+      let newTodoData = [
         ...todoData,
         newItem
-      ];
-
+      ]
       return {
-        todoData: newArr
-      };
-    });
+        todoData: newTodoData
+      }
+    })
+  }
 
-  };
+  handlerDeleteItem = (id) => {
+    this.setState((state) => {
+      const { todoData } = state
+      const idx = todoData.findIndex((el) => el.id === id)
+      const newTodoData = [
+        ...todoData.slice(0, idx),
+        ...todoData.slice(idx + 1)
+      ]
+      return {
+        todoData: newTodoData
+      }
+    })
+  }
 
   render() {
     return (
       <div className="todo-app">
-        <AppHeader toDo={1} done={3} />
+        <AppHeader />
         <div className="top-panel d-flex">
           <SearchPanel />
           <ItemStatusFilter />
@@ -67,9 +62,10 @@ export default class App extends Component {
 
         <TodoList
           todos={this.state.todoData}
-          onDeleted={ this.deleteItem }/>
+          onDelete={this.handlerDeleteItem}
+        />
 
-        <ItemAddForm onItemAdded={this.addItem}/>
+        <ItemAddForm onAdd={this.handlerAddItem}/>
       </div>
     );
   }
