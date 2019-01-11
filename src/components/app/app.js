@@ -19,7 +19,7 @@ export default class App extends Component {
       this.createTodoItem('Have a lunch')
     ],
     term: '',
-    filter: '',
+    filter: 'all',
   };
 
   createTodoItem(label) {
@@ -98,13 +98,10 @@ export default class App extends Component {
   filterItems(items, filter){
     switch (filter) {
       case 'all':
-        console.log(1)
         return items;
       case 'active':
-        console.log(2)
         return items.filter((items) => !items.done);
       case 'done':
-        console.log(3)
         return items.filter((items) => items.done);
       default:
         return items;
@@ -133,7 +130,10 @@ export default class App extends Component {
         <AppHeader toDo={todoCount} done={doneCount} />
         <div className="top-panel d-flex">
           <SearchPanel onSearch={this.onSearch}/>
-          <ItemStatusFilter onFilter={this.onFilter}/>
+          <ItemStatusFilter
+            filter={filter}
+            onFilter={this.onFilter}
+          />
         </div>
 
         <TodoList
